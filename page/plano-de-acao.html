@@ -1327,6 +1327,104 @@
             background: var(--warning);
         }
 
+        /* ===== POPUP STYLES ===== */
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 5000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-overlay.show {
+            display: flex;
+        }
+
+        .popup-content {
+            background: var(--card-light);
+            padding: 30px;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: popupSlideIn 0.3s ease-out;
+        }
+
+        body.dark .popup-content {
+            background: var(--card-dark);
+        }
+
+        .popup-content h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        body.dark .popup-content h3 {
+            color: var(--accent);
+        }
+
+        .popup-content p {
+            color: var(--text-light);
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        body.dark .popup-content p {
+            color: var(--text-dark);
+        }
+
+        .popup-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .popup-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* ===== PERMISSION ALERT STYLES ===== */
+        .permission-alert {
+            background: linear-gradient(135deg, var(--danger), #d32f2f);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(178, 19, 22, 0.3);
+        }
+
+        .permission-alert i {
+            font-size: 24px;
+        }
+
+        .permission-alert-content h4 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .permission-alert-content p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
         /* ===== ANIMATIONS ===== */
         @keyframes slideIn {
             from {
@@ -1335,6 +1433,17 @@
             }
             to {
                 transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes popupSlideIn {
+            from {
+                transform: scale(0.8) translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1) translateY(0);
                 opacity: 1;
             }
         }
@@ -1413,6 +1522,31 @@
     <!-- Mobile Overlay (Hidden for web-only) -->
     <div class="mobile-overlay" id="mobileOverlay"></div>
 
+    <!-- Popup para Equipe em Desenvolvimento -->
+    <div class="popup-overlay" id="equipePopup">
+        <div class="popup-content">
+            <h3>Página em Desenvolvimento</h3>
+            <p>Assim que a página for liberada você será notificado(a)</p>
+            <button class="popup-btn" onclick="closeEquipePopup()">Entendi</button>
+        </div>
+    </div>
+
+    <!-- Modal para Permissões Negadas -->
+    <div class="modal" id="permissionModal">
+        <div class="modal-content">
+            <div class="permission-alert">
+                <i class="ri-shield-cross-line"></i>
+                <div class="permission-alert-content">
+                    <h4>Advertência do Sistema</h4>
+                    <p>Você não tem permissão para acessar esta área.</p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-primary" onclick="closePermissionModal()">Entendi</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ENHANCED SIDEBAR -->
     <nav class="sidebar collapsed" id="sidebar">
         <div class="logo-container">
@@ -1425,24 +1559,23 @@
         </div>
         
          <ul>
-            <li class="sidebar-item ">
+            <li class="sidebar-item" onclick="navigateToPage('overview.html')">
                 <i class="ri-layout-grid-fill" aria-hidden="true"></i> 
                 <span>Início</span>
             </li>
-            <li class="sidebar-item active">
+            <li class="sidebar-item active" onclick="navigateToPage('plano-de-acao.html')">
                 <i class="ri-projector-fill" aria-hidden="true"></i> 
                 <span>Plano de Ação</span>
             </li>
-            <li class="sidebar-item ">
+            <li class="sidebar-item" onclick="navigateToPage('indicadores.html')">
                 <i class="ri-bar-chart-fill" aria-hidden="true"></i> 
                 <span>Indicadores</span>
             </li>
-            <li class="sidebar-item ">
+            <li class="sidebar-item" onclick="showEquipePopup()">
                 <i class="ri-team-fill" aria-hidden="true"></i> 
                 <span>Equipe</span>
             </li>
-
-            <li class="sidebar-item ">
+            <li class="sidebar-item" onclick="checkPermissionsAndNavigate()">
                 <i class="ri-user-settings-line"></i>
                 <span>Permissões</span>
             </li>
@@ -2691,6 +2824,96 @@
             const date = new Date(dateString);
             return date.toLocaleDateString('pt-BR');
         }
+
+        // ===== NAVIGATION AND ACCESS CONTROL FUNCTIONS =====
+        
+        // Função para navegar para páginas
+        function navigateToPage(page) {
+            window.location.href = page;
+        }
+
+        // Função para mostrar popup da equipe
+        function showEquipePopup() {
+            const popup = document.getElementById('equipePopup');
+            popup.classList.add('show');
+        }
+
+        // Função para fechar popup da equipe
+        function closeEquipePopup() {
+            const popup = document.getElementById('equipePopup');
+            popup.classList.remove('show');
+        }
+
+        // Função para verificar permissões e navegar
+        async function checkPermissionsAndNavigate() {
+            try {
+                // Buscar informações do usuário atual (simulando com dados do perfil)
+                // Em um sistema real, você buscaria do Supabase com o ID do usuário logado
+                const currentUser = await getCurrentUser();
+                
+                if (currentUser && currentUser.access_level === 'administrador') {
+                    // Usuário é administrador, pode acessar
+                    navigateToPage('permissao.html');
+                } else {
+                    // Usuário não é administrador, mostrar modal de erro
+                    showPermissionModal();
+                }
+            } catch (error) {
+                console.error('Erro ao verificar permissões:', error);
+                showPermissionModal(); // Em caso de erro, negar acesso
+            }
+        }
+
+        // Função para obter usuário atual (simulada)
+        async function getCurrentUser() {
+            try {
+                // Simulando busca no Supabase
+                // Em um sistema real, você usaria o usuário autenticado
+                const { data, error } = await supabase
+                    .from('users')
+                    .select('id, name, email, access_level')
+                    .eq('email', 'ricardo.costa@grupoalvorar.com') // Simulando usuário atual
+                    .single();
+
+                if (error) {
+                    console.error('Erro ao buscar usuário:', error);
+                    return null;
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Erro na consulta do usuário:', error);
+                return null;
+            }
+        }
+
+        // Função para mostrar modal de permissão negada
+        function showPermissionModal() {
+            const modal = document.getElementById('permissionModal');
+            modal.classList.add('show');
+        }
+
+        // Função para fechar modal de permissão
+        function closePermissionModal() {
+            const modal = document.getElementById('permissionModal');
+            modal.classList.remove('show');
+        }
+
+        // Event listeners para fechar modais ao clicar fora
+        document.addEventListener('click', function(e) {
+            const equipePopup = document.getElementById('equipePopup');
+            const permissionModal = document.getElementById('permissionModal');
+            
+            // Fechar popup da equipe se clicar no overlay
+            if (e.target === equipePopup) {
+                closeEquipePopup();
+            }
+            
+            // Fechar modal de permissão se clicar no overlay
+            if (e.target === permissionModal) {
+                closePermissionModal();
+            }
+        });
 
         // Initialize the app when DOM is loaded
         document.addEventListener('DOMContentLoaded', init);
