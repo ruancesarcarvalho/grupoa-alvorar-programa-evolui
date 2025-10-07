@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grupo Alvorar - Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="shortcut icon" href="../img/logo Evolui.jpg" type="image/x-icon">
+    <!-- Supabase JavaScript Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="../css/overview.css">
+    <!-- Funções Supabase personalizadas -->
+    <script src="../js/arquivos page 01/supabase_functions.js"></script>
+</head>
+<body>
+    <!-- Indicador de status de conexão -->
+    <div class="connection-status connecting" id="connectionStatus">
+        <i class="fas fa-circle-notch fa-spin"></i> Conectando ao Supabase...
+    </div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar collapsed" id="sidebar">
+        <div class="logo-container">
+            <div class="logo">
+                <img src="../img/Logo Alvorar.png" alt="">
+            </div>
+            
+            <!-- Botão de toggle -->
+            <div class="collapse-toggle" id="sidebarToggle">
+                <i class="ri-arrow-right-s-line" id="toggleIcon"></i>
+            </div>
+        </div>
+        
+        <ul>
+            <li class="sidebar-item active">
+                <i class="ri-layout-grid-fill" aria-hidden="true"></i> 
+                <span>Início</span>
+            </li>
+            <li class="sidebar-item">
+                <i class="ri-projector-fill" aria-hidden="true"></i> 
+                <span>Plano de Ação</span>
+            </li>
+            <li class="sidebar-item">
+                <i class="ri-bar-chart-fill" aria-hidden="true"></i> 
+                <span>Indicadores</span>
+            </li>
+            <li class="sidebar-item">
+                <i class="ri-team-fill" aria-hidden="true"></i> 
+                <span>Equipe</span>
+            </li>
+            <li class="sidebar-item">
+                <i class="ri-user-settings-line"></i>
+                <span>Permissões</span> 
+            </li>
+        </ul>
+        
+        <!-- Dark Mode Toggle -->
+        <div class="darkmode-container">
+            <div class="darkmode-toggle-wrapper">
+                <input type="checkbox" id="darkmode-toggle" />
+                <label for="darkmode-toggle">
+                    <svg version="1.1" class="sun" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 496 496" style="enable-background:new 0 0 496 496;" xml:space="preserve">
+                        <rect x="152.994" y="58.921" transform="matrix(0.3827 0.9239 -0.9239 0.3827 168.6176 -118.5145)" width="40.001" height="16" />
+                        <rect x="46.9" y="164.979" transform="matrix(0.9239 0.3827 -0.3827 0.9239 71.29 -12.4346)" width="40.001" height="16" />
+                        <rect x="46.947" y="315.048" transform="matrix(0.9239 -0.3827 0.3827 0.9239 -118.531 50.2116)" width="40.001" height="16" />
+                        <rect x="164.966" y="409.112" transform="matrix(-0.9238 -0.3828 0.3828 -0.9238 168.4872 891.7491)" width="16" height="39.999" />
+                        <rect x="303.031" y="421.036" transform="matrix(-0.3827 -0.9239 0.9239 -0.3827 50.2758 891.6655)" width="40.001" height="16" />
+                        <rect x="409.088" y="315.018" transform="matrix(-0.9239 -0.3827 0.3827 -0.9239 701.898 785.6559)" width="40.001" height="16" />
+                        <rect x="409.054" y="165.011" transform="matrix(-0.9239 0.3827 -0.3827 -0.9239 891.6585 168.6574)" width="40.001" height="16" />
+                        <rect x="315.001" y="46.895" transform="matrix(0.9238 0.3828 -0.3828 0.9238 50.212 -118.5529)" width="16" height="39.999" />
+                        <path d="M248,88c-88.224,0-160,71.776-160,160s71.776,160,160,160s160-71.776,160-160S336.224,88,248,88z M248,392
+                            c-79.4,0-144-64.6-144-144s64.6-144,144-144s144,64.6,144,144S327.4,392,248,392z" />
+                        <rect x="240" width="16" height="72" />
+                        <rect x="62.097" y="90.096" transform="matrix(0.7071 0.7071 -0.7071 0.7071 98.0963 -40.6334)" width="71.999" height="16" />
+                        <rect y="240" width="72" height="16" />
+                        <rect x="90.091" y="361.915" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 -113.9157 748.643)" width="16" height="71.999" />
+                        <rect x="240" y="424" width="16" height="72" />
+                        <rect x="361.881" y="389.915" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 397.8562 960.6281)" width="71.999" height="16" />
+                        <rect x="424" y="240" width="72" height="16" />
+                        <rect x="389.911" y="62.091" transform="matrix(0.7071 0.7071 -0.7071 0.7071 185.9067 -252.6357)" width="16" height="71.999" />
+                    </svg>
+                    <svg version="1.1" class="moon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 49.739 49.739" style="enable-background:new 0 0 49.739 49.739;" xml:space="preserve">
+                        <path d="M25.068,48.889c-9.173,0-18.017-5.06-22.396-13.804C-3.373,23.008,1.164,8.467,13.003,1.979l2.061-1.129l-0.615,2.268
+                        c-1.479,5.459-0.899,11.25,1.633,16.306c2.75,5.493,7.476,9.587,13.305,11.526c5.831,1.939,12.065,1.492,17.559-1.258v0
+                        c0.25-0.125,0.492-0.258,0.734-0.391l2.061-1.13l-0.585,2.252c-1.863,6.873-6.577,12.639-12.933,15.822
+                        C32.639,48.039,28.825,48.888,25.068,48.889z M12.002,4.936c-9.413,6.428-12.756,18.837-7.54,29.253
+                        c5.678,11.340,19.522,15.945,30.864,10.268c5.154-2.582,9.136-7.012,11.181-12.357c-5.632,2.427-11.882,2.702-17.752,0.748
+                        c-6.337-2.108-11.473-6.557-14.463-12.528C11.899,15.541,11.110,10.16,12.002,4.936z" />
+                    </svg>
+                </label>
+            </div>
+            <span>Modo Escuro</span>
+        </div>
+        
+        <!-- Profile Card -->
+        <div class="profile-card-container">
+            <div class="profile-card">
+                <div class="avatar" id="profileAvatar">RC</div>
+                <div class="user-info">
+                    <div class="user-name" id="profileUserName">Ruan Carvalho</div>
+                    <div class="user-role" id="profileUserRole">Analista de Dados</div>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="arrow-icon">
+                    <i class="ri-arrow-down-s-line"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo Principal -->
+    <div class="main-content">
+        <div class="header">
+            <div class="header-info">
+                <div class="header-title-section">
+                    <h1>Overview | <span id="departmentTitle">Carregando...</span></h1>
+                    <button class="department-change-btn" id="changeDepartmentBtn" onclick="goBackToDepartments()" title="Alterar departamento">
+                        <i class="ri-arrow-left-line"></i>
+                        <span>Alterar</span>
+                    </button>
+                </div>
+                <p>Bem-vindo de volta, Aqui está o resumo dos seus indicadores.</p>
+            </div>
+
+            <div class="header-actions">
+                <!-- Filtro Minimalista -->
+                <div class="filtro-minimalista">
+                    <button class="filtro-icone-btn" id="filtro-icone">
+                        <i class="ri-filter-3-line"></i>
+                        <div class="filtro-badge" id="filtro-badge" style="display: none;">0</div>
+                    </button>
+                    
+                    <div class="filtro-tooltip" id="filtro-tooltip">
+                        <h3><i class="ri-filter-3-line"></i> Filtros</h3>
+                        
+                        <div class="filtro-group">
+                            <label for="filtro-indicadores">Indicadores</label>
+                            <select class="filtro-select" id="filtro-indicadores">
+                                <option value="">Todos os indicadores</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <label for="filtro-responsavel">Responsável</label>
+                            <select class="filtro-select" id="filtro-responsavel">
+                                <option value="">Todos os responsáveis</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <label for="filtro-departamento">Departamento</label>
+                            <select class="filtro-select" id="filtro-departamento">
+                                <option value="">Todos os departamentos</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="filtro-group">
+                            <label for="filtro-ano">Ano</label>
+                            <select class="filtro-select" id="filtro-ano">
+                                <option value="">Todos os anos</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+                        
+                        <div class="filtro-tooltip-actions">
+                            <button class="filtro-aplicar-btn" id="filtro-aplicar">
+                                <i class="ri-check-line"></i>
+                                <span>Aplicar</span>
+                            </button>
+                            <button class="filtro-limpar-btn" id="filtro-limpar">
+                                <i class="ri-close-line"></i>
+                                <span>Limpar</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="filtro-overlay" id="filtro-overlay"></div>
+                </div>
+
+                <div class="action-btn">
+                    <i class="ri-notification-3-line"></i>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="action-btn">
+                    <i class="ri-mail-line"></i>
+                    <div class="notification-badge">7</div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="indicator-cards-container" class="charts-grid"></div><div class="chart-container">
+            <div class="chart-header">
+                <h3 class="chart-title">Resumo geral dos indicadores</h3>
+
+                <div class="chart-controls">
+                    <!-- Botão para alternar visualização -->
+                    <div class="view-toggle-container">
+                        <div class="view-toggle" id="viewToggle">
+                            <button class="view-toggle-btn active" data-view="mensal">
+                                <i class="ri-calendar-line"></i>
+                                <span>Mensal</span>
+                            </button>
+                            <button class="view-toggle-btn" data-view="ciclo">
+                                <i class="ri-refresh-line"></i>
+                                <span>Ciclo</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Botão adicionar Meta/Realizado -->
+                    <div class="action-btn" id="add-value-btn" data-tooltip="Adicionar Meta/Realizado">
+                        <i class="ri-add-line"></i>
+                    </div>
+                    <!-- Botão Plano de Ação -->
+                    <div class="action-btn" id="action-plan-btn" data-tooltip="Plano de Ação">
+                        <i class="ri-file-list-line"></i>
+                    </div>
+                    <!-- Botão Causa e Consequência -->
+                    <div class="action-btn" id="cause-consequence-btn" data-tooltip="Causa e Consequência">
+                        <i class="ri-git-branch-line"></i>
+                    </div>
+
+                    
+<!-- Modal de Plano de Ação -->
+    <div class="modal" id="action-plan-modal">
+        <div class="modal-content action-plan-modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="ri-file-list-line"></i>
+                    Plano de Ação
+                </div>
+                <button class="modal-close" id="close-action-plan-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Cabeçalho com botão Novo Plano -->
+                <div class="action-plan-header">
+                    <button class="new-plan-btn" id="new-plan-btn">
+                        <i class="ri-add-line"></i>
+                        Novo Plano
+                    </button>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="kanban-board">
+                    <div class="kanban-column" data-status="atrasado">
+                        <div class="kanban-column-header atrasado">
+                            <h3>Atrasado</h3>
+                            <span class="kanban-count" id="count-atrasado">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-atrasado">
+                            <!-- Cards atrasados serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="kanban-column" data-status="nao-iniciado">
+                        <div class="kanban-column-header nao-iniciado">
+                            <h3>Não iniciado</h3>
+                            <span class="kanban-count" id="count-nao-iniciado">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-nao-iniciado">
+                            <!-- Cards não iniciados serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="kanban-column" data-status="em-progresso">
+                        <div class="kanban-column-header em-progresso">
+                            <h3>Em progresso</h3>
+                            <span class="kanban-count" id="count-em-progresso">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-em-progresso">
+                            <!-- Cards em progresso serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="kanban-column" data-status="concluido">
+                        <div class="kanban-column-header concluido">
+                            <h3>Concluído</h3>
+                            <span class="kanban-count" id="count-concluido">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-concluido">
+                            <!-- Cards concluídos serão inseridos aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pop-up de Cadastro/Edição de Plano -->
+    <div class="modal" id="new-plan-popup">
+        <div class="modal-content new-plan-popup-content">
+            <div class="modal-header">
+                <div class="modal-title" id="plan-modal-title">
+                    <i class="ri-add-line" id="plan-modal-icon"></i>
+                    <span id="plan-modal-text">Novo Plano de Ação</span>
+                </div>
+                <button class="modal-close" id="close-new-plan-popup">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="new-plan-form">
+                    <!-- Campo oculto para ID do plano (usado na edição) -->
+                    <input type="hidden" id="plan-id" value="">
+                    
+                    <div class="form-grid">
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-title">Título</label>
+                            <input type="text" id="plan-title" class="modal__input" required placeholder="Digite o título do plano">
+                        </div>
+
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-status">Status</label>
+                            <select id="plan-status" class="modal__select" required>
+                                <option value="">Selecione o status</option>
+                                <option value="nao-iniciado">Não iniciado</option>
+                                <option value="em-progresso">Em progresso</option>
+                                <option value="concluido">Concluído</option>
+                            </select>
+                        </div>
+
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-start-date">Data de início</label>
+                            <input type="date" id="plan-start-date" class="modal__input" required>
+                        </div>
+
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-end-date">Data final</label>
+                            <input type="date" id="plan-end-date" class="modal__input" required>
+                        </div>
+
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-responsible">Responsável</label>
+                            <select id="plan-responsible" class="modal__select" required>
+                                <option value="">Selecione o responsável</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-department">Departamento</label>
+                            <select id="plan-department" class="modal__select" required>
+                                <option value="">Selecione o departamento</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+
+                        <div class="modal__field">
+                            <label class="modal__label" for="plan-indicator">Indicador relacionado</label>
+                            <select id="plan-indicator" class="modal__select">
+                                <option value="">Selecione o indicador (opcional)</option>
+                                <!-- Opções serão carregadas dinamicamente -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal__field">
+                        <label class="modal__label" for="plan-description">Descrição</label>
+                        <textarea id="plan-description" class="modal__textarea" rows="4" placeholder="Descreva o plano de ação..."></textarea>
+                    </div>
+
+                    <!-- Área de Tarefas -->
+                    <div class="tasks-section">
+                        <div class="tasks-header">
+                            <label class="modal__label">Tarefas</label>
+                            <button type="button" class="add-task-btn" id="add-task-btn">
+                                <i class="ri-add-line"></i>
+                                Adicionar Tarefa
+                            </button>
+                        </div>
+                        <div class="tasks-list" id="tasks-list">
+                            <!-- Tarefas serão adicionadas aqui -->
+                        </div>
+                    </div>
+
+                    <!-- Área de Anexos do Plano -->
+                    <div class="plan-attachments-section">
+                        <div class="plan-attachments-header">
+                            <label class="modal__label">Anexos</label>
+                            <button type="button" class="add-plan-attachment-btn" id="add-plan-attachment-btn">
+                                <i class="ri-attachment-line"></i>
+                                Anexar Arquivo
+                            </button>
+                            <input type="file" id="plan-attachment-input" multiple style="display: none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif">
+                        </div>
+                        <div class="plan-attachments-list" id="plan-attachments-list">
+                            <!-- Anexos do plano serão exibidos aqui -->
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancel-new-plan">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="submit-plan-btn">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Detalhes do Plano de Ação -->
+    <div class="modal" id="plan-details-modal">
+        <div class="modal-content plan-details-modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="ri-file-list-line"></i>
+                    Detalhes do Plano de Ação
+                </div>
+                <button class="modal-close" id="close-plan-details-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Informações Principais -->
+                <div class="plan-details-header">
+                    <div class="plan-title-section">
+                        <h2 id="plan-details-title">Título do Plano</h2>
+                        <span class="plan-status-badge" id="plan-details-status">Status</span>
+                    </div>
+                    <div class="plan-actions">
+                        <button class="btn-icon edit-plan-details-btn" id="edit-plan-details-btn" title="Editar plano">
+                            <i class="ri-edit-line"></i>
+                        </button>
+                        <button class="btn-icon delete-plan-details-btn" id="delete-plan-details-btn" title="Excluir plano">
+                            <i class="ri-delete-bin-line"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Informações do Plano -->
+                <div class="plan-info-grid">
+                    <div class="info-item">
+                        <label><i class="ri-calendar-line"></i> Período</label>
+                        <span id="plan-details-period">01/01/2024 - 31/12/2024</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="ri-user-line"></i> Responsável</label>
+                        <span id="plan-details-assignee">Nome do Responsável</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="ri-building-line"></i> Departamento</label>
+                        <span id="plan-details-department">Nome do Departamento</span>
+                    </div>
+                    <div class="info-item">
+                        <label><i class="ri-bar-chart-line"></i> Indicador</label>
+                        <span id="plan-details-indicator">Nome do Indicador</span>
+                    </div>
+                </div>
+
+                <!-- Descrição -->
+                <div class="plan-description-section">
+                    <label class="section-label">Descrição</label>
+                    <div class="plan-description-content" id="plan-details-description">
+                        Descrição detalhada do plano de ação...
+                    </div>
+                </div>
+
+                <!-- Tarefas -->
+                <div class="plan-tasks-section">
+                    <div class="section-header">
+                        <label class="section-label">Tarefas</label>
+                        <div class="tasks-progress">
+                            <span class="progress-text" id="tasks-progress-text">0 de 0 concluídas</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="tasks-progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tasks-list-details" id="plan-details-tasks">
+                        <!-- Tarefas serão carregadas aqui -->
+                    </div>
+                </div>
+
+                <!-- Anexos -->
+                <div class="plan-attachments-section" id="plan-details-attachments-section" style="display: none;">
+                    <label class="section-label">Anexos</label>
+                    <div class="attachments-list-details" id="plan-details-attachments">
+                        <!-- Anexos serão carregados aqui -->
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="close-plan-details-btn">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Causa e Consequência -->
+    <div class="modal" id="cause-consequence-modal">
+        <div class="modal-content cause-consequence-modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="ri-git-branch-line"></i>
+                    Causa e Consequência
+                </div>
+                <button class="modal-close" id="close-cause-consequence-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="cause-consequence-form">
+                    <!-- Filtro de Período -->
+                    <div class="cause-consequence-filters">
+                        <div class="filter-group">
+
+                            <div class="filter-group">
+                    <label for="indicator-select">Indicador</label>
+                    <select class="filter-select" id="indicator-select">
+                        <option value="">Todos os Indicadores</option>
+                        <!-- Opções serão carregadas dinamicamente -->
+                    </select>
+                </div>
+                            <label class="modal__label" for="period-type-filter">Período</label>
+                            <select id="period-type-filter" class="modal__select">
+                                <option value="mensal">Mês</option>
+                                <option value="ciclo">Ciclo</option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group" id="month-filter-group">
+                            <label class="modal__label" for="month-filter">Mês</label>
+                            <select id="month-filter" class="modal__select">
+                                <option value="01">Janeiro</option>
+                                <option value="02">Fevereiro</option>
+                                <option value="03">Março</option>
+                                <option value="04">Abril</option>
+                                <option value="05">Maio</option>
+                                <option value="06">Junho</option>
+                                <option value="07">Julho</option>
+                                <option value="08">Agosto</option>
+                                <option value="09">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group" id="cycle-filter-group" style="display: none;">
+                            <label class="modal__label" for="cycle-filter">Ciclo</label>
+                            <select id="cycle-filter" class="modal__select">
+                                <option value="C01">C01</option>
+                                <option value="C02">C02</option>
+                                <option value="C03">C03</option>
+                                <option value="C04">C04</option>
+                                <option value="C05">C05</option>
+                                <option value="C06">C06</option>
+                                <option value="C07">C07</option>
+                                <option value="C08">C08</option>
+                                <option value="C09">C09</option>
+                                <option value="C10">C10</option>
+                                <option value="C11">C11</option>
+                                <option value="C12">C12</option>
+                                <option value="C13">C13</option>
+                                <option value="C14">C14</option>
+                                <option value="C15">C15</option>
+                                <option value="C16">C16</option>
+                                <option value="C17">C17</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="modal__label" for="year-filter">Ano</label>
+                            <select id="year-filter" class="modal__select">
+                                <option value="2024">2024</option>
+                                <option value="2025" selected>2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Campos de Texto Rico -->
+                    <div class="cause-consequence-content">
+                        <div class="content-section">
+                            <div class="content-header">
+                                <label class="modal__label">Causa</label>
+                                <button type="button" class="edit-btn" id="edit-cause-btn-modal">
+                                    <i class="ri-edit-line"></i>
+                                    Editar
+                                </button>
+                            </div>
+                            <div class="rich-text-container">
+                                <div class="rich-text-toolbar" id="cause-toolbar-modal" style="display: none;">
+                                    <button type="button" class="toolbar-btn" data-command="bold">
+                                        <i class="ri-bold"></i>
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-command="insertUnorderedList">
+                                        <i class="ri-list-unordered"></i>
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-command="hiliteColor" data-value="yellow">
+                                        <i class="ri-mark-pen-line"></i>
+                                    </button>
+                                </div>
+                                <div class="rich-text-editor" id="cause-editor-modal" contenteditable="false" placeholder="Descreva a causa..."></div>
+                            </div>
+                        </div>
+
+                        <div class="content-section">
+                            <div class="content-header">
+                                <label class="modal__label">Consequência</label>
+                                <button type="button" class="edit-btn" id="edit-consequence-btn-modal">
+                                    <i class="ri-edit-line"></i>
+                                    Editar
+                                </button>
+                            </div>
+                            <div class="rich-text-container">
+                                <div class="rich-text-toolbar" id="consequence-toolbar-modal" style="display: none;">
+                                    <button type="button" class="toolbar-btn" data-command="bold">
+                                        <i class="ri-bold"></i>
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-command="insertUnorderedList">
+                                        <i class="ri-list-unordered"></i>
+                                    </button>
+                                    <button type="button" class="toolbar-btn" data-command="hiliteColor" data-value="yellow">
+                                        <i class="ri-mark-pen-line"></i>
+                                    </button>
+                                </div>
+                                <div class="rich-text-editor" id="consequence-editor-modal" contenteditable="false" placeholder="Descreva a consequência..."></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Área de Anexos -->
+                    <div class="attachments-section">
+                        <div class="attachments-header">
+                            <label class="modal__label">
+                                <i class="ri-attachment-line"></i>
+                                Anexos
+                                <span class="attachment-count" id="attachment-count-modal">(0)</span>
+                            </label>
+                            <button type="button" class="add-attachment-btn" id="add-attachment-btn-modal">
+                                <i class="ri-add-line"></i>
+                                Adicionar Anexo
+                            </button>
+                            <input type="file" id="attachment-input-modal" multiple style="display: none;" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.jpg,.jpeg,.png,.gif,.bmp,.svg,.txt,.zip,.rar">
+                        </div>
+                        <div class="attachments-container">
+                            <div class="attachments-list" id="attachments-list-modal">
+                                <!-- Anexos serão exibidos aqui -->
+                            </div>
+                            <div class="attachment-placeholder" id="attachment-placeholder-modal">
+                                <i class="ri-file-add-line"></i>
+                                <p>Nenhum anexo adicionado</p>
+                                <small>Clique em "Adicionar Anexo" para incluir arquivos de até 150MB</small>
+                            </div>
+                        </div>
+                        <div class="attachment-info">
+                            <small>
+                                <i class="ri-information-line"></i>
+                                Formatos aceitos: PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, JPG, PNG, GIF, TXT, ZIP, RAR (até 150MB)
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Botões de Ação -->
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" id="cancel-cause-consequence">Cancelar</button>
+                        <button type="submit" class="btn-primary">Salvar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+                    <div class="modal" id="add-value-modal">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-title">Adicionar Meta/Realizado</div>
+                                <button class="modal-close" id="close-add-value-modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="add-value-form">
+                                    <div class="modal__field">
+                                        <label class="modal__label" for="add-value-indicator">Indicador</label>
+                                        <select id="add-value-indicator" class="modal__select" required>
+                                            <option value="">Selecione o indicador</option>
+                                            <option value="absenteismo">Absenteísmo</option>
+                                            <option value="rotatividade">Rotatividade</option>
+                                            <option value="produtividade">Produtividade</option>
+                                            <option value="satisfacao">Satisfação</option>
+                                            <option value="eficiencia_operacional">Eficiência Operacional</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="modal__field">
+                                        <label class="modal__label" for="add-value-type">Tipo de Valor</label>
+                                        <select id="add-value-type" class="modal__select" required>
+                                            <option value="">Selecione o tipo</option>
+                                            <option value="meta">Meta</option>
+                                            <option value="realizado">Realizado</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="modal__field">
+                                        <label class="modal__label" for="period-type">Tipo de Período</label>
+                                        <select id="period-type" class="modal__select" required>
+                                            <option value="">Selecione o tipo de período</option>
+                                            <option value="ciclo">Por Ciclo</option>
+                                            <option value="mensal">Mensal</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="modal__field" id="cycle-field" style="display: none;">
+                                        <label class="modal__label" for="cycle-select">Ciclo</label>
+                                        <select id="cycle-select" class="modal__select">
+                                            <option value="">Selecione o ciclo</option>
+                                            <option value="C1">C1</option>
+                                            <option value="C2">C2</option>
+                                            <option value="C3">C3</option>
+                                            <option value="C4">C4</option>
+                                            <option value="C5">C5</option>
+                                            <option value="C6">C6</option>
+                                            <option value="C7">C7</option>
+                                            <option value="C8">C8</option>
+                                            <option value="C9">C9</option>
+                                            <option value="C10">C10</option>
+                                            <option value="C11">C11</option>
+                                            <option value="C12">C12</option>
+                                            <option value="C13">C13</option>
+                                            <option value="C14">C14</option>
+                                            <option value="C15">C15</option>
+                                            <option value="C16">C16</option>
+                                            <option value="C17">C17</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="date-range" id="cycle-date-range" style="display: none;">
+                                        <div class="date-range__field">
+                                            <label class="modal__label" for="add-value-start-date">Data de Início do Ciclo</label>
+                                            <input type="date" id="add-value-start-date" class="modal__input">
+                                        </div>
+                                        <div class="date-range__field">
+                                            <label class="modal__label" for="add-value-end-date">Data de Término do Ciclo</label>
+                                            <input type="date" id="add-value-end-date" class="modal__input">
+                                        </div>
+                                    </div>
+
+                                    <div class="modal__field" id="month-field" style="display: none;">
+                                        <label class="modal__label" for="month-select">Mês</label>
+                                        <select id="month-select" class="modal__select">
+                                            <option value="">Selecione o mês</option>
+                                            <option value="1">Janeiro</option>
+                                            <option value="2">Fevereiro</option>
+                                            <option value="3">Março</option>
+                                            <option value="4">Abril</option>
+                                            <option value="5">Maio</option>
+                                            <option value="6">Junho</option>
+                                            <option value="7">Julho</option>
+                                            <option value="8">Agosto</option>
+                                            <option value="9">Setembro</option>
+                                            <option value="10">Outubro</option>
+                                            <option value="11">Novembro</option>
+                                            <option value="12">Dezembro</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="modal__field" id="year-field" style="display: none;">
+                                        <label class="modal__label" for="year-select">Ano</label>
+                                        <select id="year-select" class="modal__select">
+                                            <option value="">Selecione o ano</option>
+                                            <option value="2023">2023</option>
+                                            <option value="2024">2024</option>
+                                            <option value="2025">2025</option>
+                                            <option value="2026">2026</option>
+                                            <option value="2027">2027</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="modal__field" id="meta-type-field" style="display: none;">
+                                        <label class="modal__label">Tipo de Meta</label>
+                                        <div class="radio-group">
+                                            <input type="radio" id="meta-max" name="meta-type" value="max">
+                                            <label for="meta-max">Meta Máxima</label>
+                                            <input type="radio" id="meta-min" name="meta-type" value="min">
+                                            <label for="meta-min">Meta Mínima</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal__field">
+                                        <label class="modal__label" for="add-value-value">Valor</label>
+                           <input type="text" id="add-value-value-input" class="modal__input" required inputmode="decimal">
+                                        <input type="hidden" id="add-value-value-raw">
+                                        <input type="hidden" id="add-value-indicator-type-name">
+                                        <span id="formatted-value-display" class="modal__formatted-value-display"></span>                                 </div>
+
+                                    <div class="modal__actions">
+                                        <button type="button" class="modal__btn modal__btn--secondary" id="cancel-add-value-btn">Cancelar</button>
+                                        <button type="submit" class="modal__btn modal__btn--primary">Salvar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Configurações do gráfico -->
+                    <div class="chart-config">
+                        <i class="ri-settings-3-line config-icon" id="configIcon"></i>
+                        <div class="config-tooltip" id="configTooltip">
+                            <div class="config-option">
+                                <label>
+                                    <input type="checkbox" id="showBarChart" checked> Gráfico de Barras
+                                </label>
+                            </div>
+                            <div class="config-option">
+                                <label>
+                                    <input type="checkbox" id="showLineChart" checked> Linha de Tendência
+                                </label>
+                            </div>
+                            <div class="config-option">
+                                <label>
+                                    <input type="checkbox" id="showMinMeta" checked> Meta Mínima
+                                </label>
+                            </div>
+                            <div class="config-option">
+                                <label>
+                                    <input type="checkbox" id="showMaxMeta" checked> Meta Máxima
+                                </label>
+                            </div>
+                            <div class="config-option">
+                                <label>
+                                    <input type="checkbox" id="showAxis" checked> Eixos
+                                </label>
+                            </div>
+                            <div class="config-option">
+                                <label>
+                                    <input type="checkbox" id="showDataLabels"> Rótulos de Dados
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                </div>
+            </div>
+
+            <div class="chart-canvas-container">
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfico Comparativo YoY -->
+        <div class="chart-container" id="yoy-chart-container" style="display: none;">
+            <div class="chart-header">
+                <h3 class="chart-title">Comparativo Year-over-Year (YoY)</h3>
+                <div class="chart-controls">
+                    <div class="chart-info">
+                        <i class="ri-information-line"></i>
+                        <span>Comparação com o mesmo período do ano anterior</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chart-canvas-container">
+                <canvas id="yoyChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Modal de Plano de Ação -->
+    <div class="modal" id="action-plan-modal">
+        <div class="modal-content action-plan-modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <i class="ri-file-list-line"></i>
+                    Plano de Ação
+                </div>
+                <button class="modal-close" id="close-action-plan-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Cabeçalho com botão Novo Plano -->
+                <div class="action-plan-header">
+                    <button class="new-plan-btn" id="new-plan-btn">
+                        <i class="ri-add-line"></i>
+                        Novo Plano
+                    </button>
+                </div>
+
+                <!-- Kanban Board -->
+                <div class="kanban-board">
+                    <div class="kanban-column" data-status="atrasado">
+                        <div class="kanban-column-header atrasado">
+                            <h3>Atrasado</h3>
+                            <span class="kanban-count" id="count-atrasado">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-atrasado">
+                            <!-- Cards atrasados serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="kanban-column" data-status="nao-iniciado">
+                        <div class="kanban-column-header nao-iniciado">
+                            <h3>Não iniciado</h3>
+                            <span class="kanban-count" id="count-nao-iniciado">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-nao-iniciado">
+                            <!-- Cards não iniciados serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="kanban-column" data-status="em-progresso">
+                        <div class="kanban-column-header em-progresso">
+                            <h3>Em progresso</h3>
+                            <span class="kanban-count" id="count-em-progresso">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-em-progresso">
+                            <!-- Cards em progresso serão inseridos aqui -->
+                        </div>
+                    </div>
+
+                    <div class="kanban-column" data-status="concluido">
+                        <div class="kanban-column-header concluido">
+                            <h3>Concluído</h3>
+                            <span class="kanban-count" id="count-concluido">0</span>
+                        </div>
+                        <div class="kanban-column-content" id="kanban-concluido">
+                            <!-- Cards concluídos serão inseridos aqui -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Pop-up de Causa e Consequência -->
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup-container">
+            <!-- Cabeçalho do Pop-up -->
+            <div class="popup-header">
+                <div class="popup-title">
+                    <i class="ri-git-branch-line"></i>
+                    <span>Causa e Consequência | <span id="departmentTitlePopup">Carregando...</span></span>
+                </div>
+                <button class="popup-close" id="popup-close">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+
+            <!-- Conteúdo do Pop-up -->
+            <div class="popup-content">
+                <!-- Filtros -->
+                <div class="popup-filters-container">
+                    <div class="popup-filters-header">
+                        <h3><i class="ri-filter-3-line"></i> Filtros</h3>
+                    </div>
+                    <div class="popup-filters-content">
+                        <div class="popup-filter-group">
+                            <label for="popup-indicator-select">Indicador</label>
+                            <select class="popup-filter-select" id="popup-indicator-select">
+                                <option value="">Todos os Indicadores</option>
+                            </select>
+                        </div>
+                        <div class="popup-filter-group">
+                            <label for="popup-periodo-tipo">Período</label>
+                            <select class="popup-filter-select" id="popup-periodo-tipo">
+                                <option value="mes">Mês</option>
+                                <option value="ciclo">Ciclo</option>
+                            </select>
+                        </div>
+                        <div class="popup-filter-group" id="popup-mes-group">
+                            <label for="popup-mes-select">Mês</label>
+                            <select class="popup-filter-select" id="popup-mes-select">
+                                <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
+                                <option value="3">Março</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Maio</option>
+                                <option value="6">Junho</option>
+                                <option value="7">Julho</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Setembro</option>
+                                <option value="10">Outubro</option>
+                                <option value="11">Novembro</option>
+                                <option value="12">Dezembro</option>
+                            </select>
+                        </div>
+                        <div class="popup-filter-group" id="popup-ciclo-group" style="display: none;">
+                            <label for="popup-ciclo-select">Ciclo</label>
+                            <select class="popup-filter-select" id="popup-ciclo-select">
+                                <option value="C01">C01</option>
+                                <option value="C02">C02</option>
+                                <option value="C03">C03</option>
+                                <option value="C04">C04</option>
+                                <option value="C05">C05</option>
+                                <option value="C06">C06</option>
+                                <option value="C07">C07</option>
+                                <option value="C08">C08</option>
+                                <option value="C09">C09</option>
+                                <option value="C10">C10</option>
+                                <option value="C11">C11</option>
+                                <option value="C12">C12</option>
+                                <option value="C13">C13</option>
+                                <option value="C14">C14</option>
+                                <option value="C15">C15</option>
+                                <option value="C16">C16</option>
+                                <option value="C17">C17</option>
+                            </select>
+                        </div>
+                        <div class="popup-filter-group">
+                            <label for="popup-ano-select">Ano</label>
+                            <select class="popup-filter-select" id="popup-ano-select">
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                                <option value="2026">2026</option>
+                            </select>
+                        </div>
+                        <div class="popup-filter-actions">
+                            <button class="popup-filter-apply-btn" id="popup-aplicar-filtros">
+                                <i class="ri-check-line"></i>
+                                <span>Aplicar</span>
+                            </button>
+                            <button class="popup-filter-clear-btn" id="popup-limpar-filtros">
+                                <i class="ri-close-line"></i>
+                                <span>Limpar</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid de Conteúdo -->
+                <div class="popup-content-grid">
+                    <!-- Seção Causa -->
+                    <div class="popup-content-section">
+                        <div class="popup-section-header">
+                            <h3><i class="ri-question-line"></i> Causa</h3>
+                            <button class="popup-edit-btn" id="popup-edit-causa-btn" title="Editar Causa">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                        </div>
+                        <div class="popup-section-content" id="popup-causa-content">
+                            <div class="popup-empty-state">
+                                <i class="ri-file-text-line"></i>
+                                <p>Por favor adicione a Causa</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção Consequência -->
+                    <div class="popup-content-section">
+                        <div class="popup-section-header">
+                            <h3><i class="ri-arrow-right-line"></i> Consequência</h3>
+                            <button class="popup-edit-btn" id="popup-edit-consequencia-btn" title="Editar Consequência">
+                                <i class="ri-edit-line"></i>
+                            </button>
+                        </div>
+                        <div class="popup-section-content" id="popup-consequencia-content">
+                            <div class="popup-empty-state">
+                                <i class="ri-file-text-line"></i>
+                                <p>Por favor adicione a Consequência</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Seção Anexos -->
+                    <div class="popup-content-section full-width">
+                        <div class="popup-section-header">
+                            <h3><i class="ri-attachment-line"></i> Anexos</h3>
+                            <button class="popup-upload-btn" id="popup-upload-btn" title="Adicionar Anexo">
+                                <i class="ri-upload-line"></i>
+                                <span>Adicionar Anexo</span>
+                            </button>
+                        </div>
+                        <div class="popup-section-content" id="popup-anexos-content">
+                            <div class="popup-empty-state">
+                                <i class="ri-folder-open-line"></i>
+                                <p>Nenhum anexo adicionado</p>
+                                <small>Tipos permitidos: PDF, JPG, PNG (até 150 MB)</small>
+                            </div>
+                        </div>
+                        <input type="file" id="popup-file-input" accept=".pdf,.jpg,.jpeg,.png" style="display: none;" multiple>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal do Editor -->
+    <div class="popup-editor-modal" id="popup-editor-modal">
+        <div class="popup-editor-modal-content">
+            <div class="popup-editor-modal-header">
+                <div class="popup-editor-modal-title" id="popup-editor-modal-title"></div>
+                <button class="popup-editor-modal-close" id="popup-close-editor-modal">&times;</button>
+            </div>
+            <div class="popup-editor-modal-body">
+                <div class="popup-editor-toolbar">
+                    <button type="button" class="popup-toolbar-btn" id="popup-bold-btn" title="Negrito">
+                        <i class="ri-bold"></i>
+                    </button>
+                    <button type="button" class="popup-toolbar-btn" id="popup-list-btn" title="Lista com Tópicos">
+                        <i class="ri-list-unordered"></i>
+                    </button>
+                    <div class="popup-color-picker-container">
+                        <button type="button" class="popup-toolbar-btn" id="popup-highlight-btn" title="Marcador de Texto">
+                            <i class="ri-mark-pen-line"></i>
+                        </button>
+                        <input type="color" id="popup-color-picker" value="#ffff00" style="display: none;">
+                        <div class="popup-color-options" id="popup-color-options">
+                            <div class="popup-color-option" data-color="#ffff00" style="background-color: #ffff00;" title="Amarelo"></div>
+                            <div class="popup-color-option" data-color="#90EE90" style="background-color: #90EE90;" title="Verde Claro"></div>
+                            <div class="popup-color-option" data-color="#ADD8E6" style="background-color: #ADD8E6;" title="Azul Claro"></div>
+                            <div class="popup-color-option" data-color="#FFB6C1" style="background-color: #FFB6C1;" title="Rosa Claro"></div>
+                            <div class="popup-color-option" data-color="#D3D3D3" style="background-color: #D3D3D3;" title="Cinza Claro"></div>
+                            <div class="popup-color-option" data-color="transparent" style="background-color: transparent; border: 1px solid var(--border-light);" title="Remover Marcador"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="popup-editor-content" id="popup-editor-content" contenteditable="true" placeholder="Digite o conteúdo aqui..."></div>
+            </div>
+            <div class="popup-editor-modal-footer">
+                <button class="popup-btn-secondary" id="popup-cancel-editor">Cancelar</button>
+                <button class="popup-btn-primary" id="popup-save-editor">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Container para Toasts -->
+    <div id="toast-container"></div>
+
+  
+
+
+
+
+        <!-- Toast de notificação -->
+        <div class="toast" id="toast"></div>
+    </div>
+
+    
+
+    <!-- Script principal -->
+    <script src="../js/arquivos page 01/overview.js"></script>
+    <!-- Script dos modais de plano de ação -->
+    <script src="../js/arquivos page 01/action-plan-modal.js"></script>
+    <script src="../js/arquivos page 01/supabase_functions.js"></script>
+
+    
+</body>
+</html>
+
+    
