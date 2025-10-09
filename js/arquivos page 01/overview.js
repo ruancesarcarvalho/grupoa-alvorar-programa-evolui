@@ -935,25 +935,31 @@ async function atualizarGraficoComFiltros() {
         } else if (currentViewType === 'ciclo') {
             console.log('Processando dados de ciclo...');
             
-            // Definir todos os 12 ciclos do ano
-            const allCycles = [
-                { ciclo: 1 }, { ciclo: 2 }, { ciclo: 3 }, { ciclo: 4 },
-                { ciclo: 5 }, { ciclo: 6 }, { ciclo: 7 }, { ciclo: 8 },
-                { ciclo: 9 }, { ciclo: 10 }, { ciclo: 11 }, { ciclo: 12 }
-            ];
-            
             // Criar um mapa dos dados existentes por ciclo
             const dataMap = {};
+            let maxCycle = 12; // Valor padrão mínimo
+            
             if (dataFromSupabase && dataFromSupabase.length > 0) {
                 dataFromSupabase.forEach(item => {
                     dataMap[item.ciclo] = item;
+                    // Encontrar o maior número de ciclo nos dados
+                    if (item.ciclo > maxCycle) {
+                        maxCycle = item.ciclo;
+                    }
                 });
                 console.log('Dados do banco mapeados:', Object.keys(dataMap).length, 'ciclos');
+                console.log('Maior ciclo encontrado:', maxCycle);
             } else {
                 console.log('Nenhum dado do banco, usando estrutura vazia');
             }
             
-            // Gerar dados para todos os 12 ciclos
+            // Gerar dinamicamente todos os ciclos baseado no maior ciclo encontrado
+            const allCycles = [];
+            for (let i = 1; i <= maxCycle; i++) {
+                allCycles.push({ ciclo: i });
+            }
+            
+            // Gerar dados para todos os ciclos encontrados
             const completeCycleData = allCycles.map(cycle => {
                 const existingData = dataMap[cycle.ciclo];
                 return {
@@ -984,7 +990,7 @@ async function atualizarGraficoComFiltros() {
                 item.meta_maxima !== null && item.meta_maxima !== undefined ? parseFloat(item.meta_maxima) : null
             );
             
-            console.log('Dados de ciclo processados (12 ciclos SEMPRE):', {
+            console.log(`Dados de ciclo processados (${maxCycle} ciclos):`, {
                 labels: dadosParaGrafico.labels,
                 valores: dadosParaGrafico.realizedValues,
                 metas_min: dadosParaGrafico.minMeta,
